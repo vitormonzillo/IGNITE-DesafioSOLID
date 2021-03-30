@@ -6,10 +6,16 @@ interface IRequest {
 }
 
 class TurnUserAdminUseCase {
-  constructor(private usersRepository: IUsersRepository) {}
+  // eslint-disable-next-line prettier/prettier
+  constructor(private usersRepository: IUsersRepository) { }
 
   execute({ user_id }: IRequest): User {
-    // Complete aqui
+    const userToTurn = this.usersRepository.findById(user_id);
+    if (!userToTurn) {
+      throw new Error("There's no user attached to this id");
+    }
+    const nowAdmin = this.usersRepository.turnAdmin(userToTurn);
+    return nowAdmin;
   }
 }
 
